@@ -1,6 +1,6 @@
 ## Intelligent Auto - Transcending the driving hassle free.
 
-To convert the convert the conventional vechicle to into a SDV we used sensors and measurements from the vehicle published over eCAL network and built apps that help estimate
+To convert the conventional vechicle to into a SDV we used sensors and measurements from the vehicle published over eCAL network and built apps that help estimate
 1. Vehicle Stability
 2. Traffic rules violation Check
 3. Collison Detection
