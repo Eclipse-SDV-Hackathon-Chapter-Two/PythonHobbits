@@ -98,5 +98,5 @@ ank- logs "<APP-NAME>"
 ## Team members
 
 - [Veena Sridhar](https://linkedin.com/in/veenasridhar96/)
-- [Mehraj Fathima](https://linkedin.com/in/mehrajfathima/)
+- [Mehraj Fathima](https://www.linkedin.com/in/mehraj-fathima-z-b05a55163/)
 - [Raghul Raj](https://linkedin.com/in/raghulraj2305/)
