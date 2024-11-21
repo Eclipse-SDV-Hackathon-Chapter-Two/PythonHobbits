@@ -60,6 +60,11 @@ To check whether the workloads are start run
 ank get workloads
 ```
 
+To get the logs
+```
+ank- logs "<APP-NAME>"
+```
+
 ## Dashboard created
 
 <p align="center">
@@ -78,8 +83,20 @@ ank get workloads
    <img src="src/ObjectDetection.png" alt="funnydriving"/>
 </p>
 
+## Ankaios dashboard
+
+<p align="center">
+   <img src="src/ankaios_dashboard.png" alt="ank"/>
+</p>
+
 ## ROI Estimation from Camera
 
 <p align="center">
    <img src="src/screenshot.png" alt="roi"/>
 </p>
+
+## Team members
+
+- [Veena Sridhar](https://linkedin.com/in/veenasridhar96/)
+- [Mehraj Fathima](https://linkedin.com/in/mehrajfathima/)
+- [Raghul Raj](https://linkedin.com/in/raghulraj2305/)
