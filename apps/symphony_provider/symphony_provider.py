@@ -13,6 +13,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 from ankaios_sdk import Workload, Ankaios, WorkloadStateEnum, WorkloadSubStateEnum, AnkaiosLogLevel, Manifest, Request, CompleteState
+import paho.mqtt.client as mqtt
 import json
 import os
 import logging
@@ -25,30 +26,43 @@ stdout.setLevel(logging.INFO)
 logger.addHandler(stdout)
 logger.setLevel(logging.INFO)
 
-# Get config over environment variables
+BROKER = os.environ.get('MQTT_BROKER_ADDR', 'localhost')
+PORT = int(os.environ.get('MQTT_BROKER_PORT', '5600'))
+VEHICLE_ID = os.environ.get('VIN')
+BASE_TOPIC = f"vehicle/{VEHICLE_ID}"
+
+
 VEHICLE_ID = os.environ.get('VIN')
 count = 1
-# Create a new Ankaios object.
-# The connection to the control interface is automatically done at this step.
+
 with Ankaios() as ankaios:
 
-    while True:
+    # Callback when the client receives a CONNACK response from the MQTT server
+    def on_connect(client, userdata, flags, reason_code, properties):
+        client.subscribe(f"{BASE_TOPIC}/start")
+        client.subscribe(f"{BASE_TOPIC}/stop")    # Callback when a PUBLISH message is received from the MQTT server
 
-        # The following lines just showcase a simple interaction with Ankaios.
-        # For more information checkout out the Ankaios fleet management tutorial: 
-        # https://eclipse-ankaios.github.io/ankaios/latest/usage/tutorial-fleet-management/
-        workload = ankaios.get_workload("example_app")
-        if count==1:
-            workload.update_agent_name("")
-            ankaios.apply_workload(workload)
-            logger.info(f"count {count}")
-        count = count+1
-        if count==7:
-            workload.update_agent_name("hpc2")
-            ankaios.apply_workload(workload)
-            logger.info(f"count 7{count}")
-        state = ankaios.get_state(field_masks=["workloadStates"])
-        logger.info(f"Hello from vehicle {VEHICLE_ID}")
-        logger.info(f"count outside {count}")
-        logger.info(f"Got the following workload execution states from Ankaios: {state.to_dict()["workload_states"]}")
-        time.sleep(3.14)
+    def on_message(client, userdata, msg):
+        try:
+            logger.info(f"Received message on topic {msg.topic} with payload {msg.payload.decode()}")
+             # Handle request for applying a manifest
+            if msg.topic == f"{BASE_TOPIC}/start":
+                workload = ankaios.get_workload("long_distance_drive")
+                workload.update_agent_name("hpc2")
+                ankaios.apply_workload(workload)
+                logger.info(f"long_distance_drive activated")
+            if msg.topic == f"{BASE_TOPIC}/stop":
+                logger.info(f"long_distance_drive deactivated")
+                workload = ankaios.get_workload("long_distance_drive")
+                workload.update_agent_name("")
+                ankaios.apply_workload(workload)
+        except Exception as e:
+            logger.error(f"Error processing message: {e}")
+
+    # Create an MQTT client instance
+    mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)    # Assign the callbacks
+    mqtt_client.on_connect = on_connect
+    mqtt_client.on_message = on_message    # Connect to the MQTT broker
+    mqtt_client.connect(BROKER, PORT, 60)    # Blocking call that processes network traffic, dispatches callbacks,
+    # and handles reconnecting.
+    mqtt_client.loop_forever()

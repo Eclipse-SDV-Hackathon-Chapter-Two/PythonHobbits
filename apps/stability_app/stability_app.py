@@ -69,10 +69,7 @@ if __name__ == "__main__":
     # Create a subscriber that listens on the "traffic_sign_detection"
     vehicle = StringSubscriber("vehicle_dynamics")
     stabilityapp = StringPublisher("stability")
-
-    # record_process = mp.Process(target=record_signal, args=(speed_input_queue,))
-    # record_process.start()
-
+    
     # Start the signal processing process
     process_signals_process = mp.Process(target=stability_process_signals, args=(stability_input_queue,))
     process_signals_process.start()

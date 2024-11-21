@@ -39,13 +39,16 @@ score = {
 # Callback for receiving messages
 
 def detect_rash_driving(acceleration_data, window_size=120):
-    # Assuming acceleration_data is a list of acceleration values     
+    """
+    Rash driving is detected using rate of change of acceleration value 
+    
+    """     
     max_acc = max(acceleration_data)
     max_dec = min(acceleration_data)
     variance = var(acceleration_data)
     jerk = diff(acceleration_data).max()
-    print(max_acc, max_dec, variance, jerk)
-    # Example thresholds
+    # print(max_acc, max_dec, variance, jerk)
+    # Example thresholds is used here, can be configured ofr real use case
     if (max_acc > 3.0):
         score["quick_acc"] = score["quick_acc"]+1
     if (max_dec < -3.0 ):
@@ -54,17 +57,26 @@ def detect_rash_driving(acceleration_data, window_size=120):
         score["jerk"] = score["jerk"] + 1
 
 def acc_process_signals(speed_input_queue):
+    """
+    Acceleration signal is analyzed for quick acceleration and deceleeration. 
+    Since the data is sampled at 20Hz - 2 seconds of data is being used to estimate acceleration /deceleration.
+
+    """
+    
     acc_ = []
     avg_var = []
     while True:
         if not acc_input_queue.empty():
             signal = acc_input_queue.get()
             acc_.append(signal)
-            if len(acc_)==120:
+            if len(acc_)==120: #2 seconds == 120 measurements
                 detect_rash_driving(acc_)
 
 def save_vehicle_data_func(data_input_queue):
-    speed = 0
+    """
+    For the drive check, driver scoring data is stored every 10 minutes
+    """
+    speednearzero = 0
     global_time = 0
     start_time =0
     count = 0
@@ -77,17 +89,17 @@ def save_vehicle_data_func(data_input_queue):
                 start = False
             if signal[1] <=0.5 and count == 0:
                 global_time = signal[0]
-                speed +=1
-                # speed.append(signal[1])
+                speednearzero +=1
                 count +=1
             if signal[1] <=0.5:
-                speed+=1
+                speednearzero+=1
             if signal[1] >0.5:
                 global_time = 0
-                speed = 0
-            if speed >= 115:
+                speednearzero = 0
+            if speednearzero >= 115:
                 current_time = signal[0]
-                if (current_time - global_time)/1e6 == 600:
+                if (current_time - global_time)/1e6 == 600: #timestamp is measured in microseconds so difference in timeestamp is converted to seconds
+                    #to simulate the vehicle health score stored in vehicle - a sample json file is written here
                     with open("health.json", 'w') as file:
                         score["timestamp"] = current_time
                         health.send(str(score))

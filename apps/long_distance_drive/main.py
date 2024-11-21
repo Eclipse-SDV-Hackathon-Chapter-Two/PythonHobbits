@@ -28,6 +28,17 @@ logger.addHandler(stdout)
 logger.setLevel(logging.INFO)
 
 def long_distance_analysis(data_input_queue):
+    """
+    This fucntion get input queue of timestamp and speed from eCAL
+    If the speed hasn't changed for a continuous period if time it is considered as rest taken. 
+
+    If not warning is raised to ask Driver to take rest
+
+    For simulation we have considered 1 minute of stopping as rest
+
+    Input: data_input_queue (timestamp, speed)
+    
+    """
     stop = 0
     global_time = 0
     start_time =0
@@ -37,7 +48,7 @@ def long_distance_analysis(data_input_queue):
         if not data_input_queue.empty():
             signal = data_input_queue.get()
             if start:
-                start_time = signal[0]
+                start_time = signal[0] # initial vehicle time is taken
                 end_time = start_time + 600_000_00 #simulating 1 minute of stop
                 start = False
             if signal[1] <=0.5 and count == 0:
@@ -49,7 +60,7 @@ def long_distance_analysis(data_input_queue):
             if signal[1] >0.5:
                 global_time = 0
                 stop = 0
-            if signal[0] == end_time:
+            if signal[0] == end_time: # within the start and estimated end time if the vehicle is stopped then eCAL data is published
                 if stop != 1150:
                     longdistance.send("Driver needs rest...")
                     logger.info(f"[Long Distance app]:Driver needs rest")

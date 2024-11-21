@@ -77,6 +77,9 @@ def traffic_process_signals(traffic_input_queue):
                 print(warning_check[signal])
 
 def speed_process_signals(speed_input_queue):
+    """
+    Speed signal is sampled at 20Hz, to monitor the speed change every 1 second
+    """
     speed_ = []
     while True:
         if not speed_input_queue.empty():
@@ -85,9 +88,11 @@ def speed_process_signals(speed_input_queue):
 
             if len(speed_)==20:
                 avg_speed = mean(speed_)
+                #Tolerance value for speed is +/- 2.5
                 upper_limit = avg_speed + 2.5
                 lower_limit = avg_speed - 2.5
                 if not traffic_input_queue.empty():
+                    #desired speed is taken from the traffic signal detection
                     desiredSpeed = traffic_input_queue.get()
                     if desiredSpeed<= lower_limit:
                         logger.info("[Violation app]: Maintain optimum speed limit...")
@@ -112,7 +117,7 @@ def traffic_callback(topic_name, msg, time):
     try:
         json_msg = json.loads(msg)
         for index, val in enumerate(json_msg["confidences"]):
-            print(val)
+            #Detection with >50% confidence are taken into consideration
             if val>=0.5:
                 if json_msg["class_ids"][index] in warning_check:
                     traffic_input_queue.put(json_msg["class_ids"][index])
@@ -125,8 +130,6 @@ def traffic_callback(topic_name, msg, time):
 
 if __name__ == "__main__":
 
-    # with open('config.json', 'r') as file:
-    #     config_data = json.load(file)
     traffic_input_queue = mp.Queue()
     speed_input_queue = mp.Queue()
     speed_limit_queue = mp.Queue()

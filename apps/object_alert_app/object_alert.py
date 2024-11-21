@@ -21,6 +21,8 @@ import multiprocessing as mp
 
 #--------------|---x1,y1--------------------x2,y2---|---------------
 FRAME_NUMBER =20
+
+# Configured safe distance from the vehicle
 car_x1_position = 100
 car_y1_position = 600
 car_x2_position = 400
@@ -47,11 +49,15 @@ logger.setLevel(logging.INFO)
 
 
 def analyze_current_state(objects_data):
+    """
+    This implements the region of interest and if a object is detected within the
+    region of interest then a warning is raised.  
+    
+    """
     for obj in objects_data:
         num_objects = len(obj['class_ids']) 
         for i in range(num_objects):
             obj_id = obj['class_ids'][i]
-            # print("Analysing ",legend[obj_id])
             if obj_id >= 9:
                 # print(obj_id)
                 continue
@@ -63,18 +69,11 @@ def analyze_current_state(objects_data):
             x2 = obj_position[i][2]
             y2 = obj_position[i][3]
 
-            
-            #Finding the centre of the object
-            #centre_x,centre_y = (x1+x2) //2 , (y1+y2) //2
-
-            #print(centre_x, centre_y)
-
-            #Object within the range
+            #Manually configured data points to analyzed a region of interest
+            #this can be modified for better accuracy
             if (x2 >= 450 and y2 >= 450 and y2 < 500):
                 msg = f"{legend[obj_id]} detected within the range."
                 obj_pub.send(msg)
-                print(msg)
-                # obj_result_queue.put(msg)
             
             #Objects too close to the vehicle 
             if (x2 >= 350 and y2 >= 500 ):
@@ -85,6 +84,10 @@ def analyze_current_state(objects_data):
     # return obj_result_queue
 
 def object_alert(input_queue):
+    """
+    Input queue with YOLO object detection frames and the frames are analyzed for every 20 frames. 
+    Objects detected from the YOLO is recorded
+    """
     objects_list = []
     frames_count=0
    
