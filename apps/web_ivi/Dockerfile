@@ -18,4 +18,6 @@ COPY static /web_ivi/static
 
 WORKDIR /web_ivi
 
+EXPOSE 5500
+
 ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5500"]
