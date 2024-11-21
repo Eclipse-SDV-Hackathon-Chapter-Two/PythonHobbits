@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speed Tracker</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <script type="text/javascript" src="static/speed.js"></script>
+</head>
+<body>
+   
+    <div class="tab-container">
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-button" onclick="showTab('actual-speed')">Actual Speed</button>
+            <button class="tab-button" onclick="showTab('desired-speed')">Desired Speed</button>
+        </div>
+
+        <!-- Tab Content -->
+        <div id="actual-speed" class="tab-content">
+            <h4>Actual Speed</h4>
+            <div id="actual-speed-circle" class="circle red">
+                <p id="actual-speed-value">50</p>
+            </div>
+        </div>
+
+        <div id="desired-speed" class="tab-content hidden">
+            <h4>Desired Speed</h4>
+            <div class="circle blue">
+                <input 
+                    type="number" 
+                    id="desired-speed-input" 
+                    value="50" 
+                    onchange="updateDesiredSpeed()" 
+                    placeholder="Set Desired Speed"
+                >
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+
+
+
+

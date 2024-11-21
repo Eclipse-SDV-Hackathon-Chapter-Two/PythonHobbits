@@ -1,0 +1,197 @@
+
+/* set margin and padding to zero for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* set the background color to black */
+body {
+    background-color: black;
+    /* set font color to white */
+    color: white;
+}
+
+.row-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+#speedometer {
+    flex: 1; 
+    text-align: center;
+    align-items: center;
+}
+
+#speed-value {
+    font-family: 'Lucida Sans Regular';
+    font-size: 100px;
+    color: white;
+    transform: translate(0%, -260%);
+}
+
+#torque {
+    flex: 1;
+    text-align: center;
+    align-items: center;
+}
+
+#torque-value {
+    font-family: 'Lucida Sans Regular';
+    font-size: 100px;
+    color: white;
+    transform: translate(0%, -260%);
+}
+
+#info-screen {
+    flex: 1;
+    text-align: center;
+    padding: 50px;
+}
+
+/* sightseeing info formatting start */
+.site-info {
+    text-align: left;
+    background-color: #202326;
+    border-radius: 7px;
+    padding: 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.site-info h2 {
+    padding-bottom: 20px;
+    color: #59F2BF;
+}
+
+.site-info p {
+    padding-top: 10px;
+}
+
+.site-info a {
+    padding-top: 10px;
+    color: #59F2BF;
+    text-decoration: none;
+}
+
+.site-info a:hover {
+    color: #95FFE4;
+}
+
+/* sightseeing info formatting end */
+
+/* make the website responsive */
+@media screen and (max-width: 1500px) {
+    .row-main {
+        flex-direction: column;
+    }
+    #speedometer, #torque, #info-screen {
+        flex: 1;
+    }
+}
+
+
+
+.tab-container {
+    text-align: center;
+    width: 500px;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-between;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.tab-button:hover {
+    background-color: #0056b3;
+}
+
+.tab-content {
+    margin-top: 20px;
+}
+
+.hidden {
+    display: none;
+}
+
+.circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: white;
+    margin: auto;
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.blue {
+    background-color: blue;
+}
+
+
+body {
+    box-sizing: border-box;
+    background-color: #111;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Poppins", sans-serif;
+  }
+  .svg-container {
+    position: relative;
+  }
+  #speed {
+    color: white;
+    font-size: 36px;
+    line-height: 100%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    bottom: 25px;
+    z-index: 1;
+  }
+  #meter-bg-bar {
+    animation: dash 4s linear forwards infinite;
+    stroke-dasharray: 615;
+  }
+  @keyframes dash {
+    0%,
+    100% {
+      stroke-dashoffset: 615;
+    }
+    25% {
+      stroke-dashoffset: 0;
+    }
+    50% {
+      stroke-dashoffset: 307.5;
+    }
+    75% {
+      stroke-dashoffset: 0;
+    }
+  }
+  

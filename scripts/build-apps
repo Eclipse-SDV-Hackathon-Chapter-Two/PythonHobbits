@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+base_dir="/workspaces/shift2sdv/apps"
+
+# build the container for all applications in the apps folder
+apps=$(find "$base_dir" -maxdepth 1 -mindepth 1 -type d -printf "%f\n")
+for app in $apps; do
+    dockerfile="$base_dir/$app/Dockerfile"
+    # Check if VERSION is set
+    if [ -f "$dockerfile" ]; then
+        echo "Building container for $app ..."
+        podman build -t "ghcr.io/eclipse-sdv-hackathon-chapter-two/shift2sdv/$app" "$base_dir/$app"
+        echo "done."
+    else
+        echo "No Dockerfile found under $dockerfile. Skipping app $app."
+    fi
+done

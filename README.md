@@ -24,5 +24,62 @@ For the hackathon purpose we used existing signals and predicted a score based o
 ### Know your breaks
 This app is enable by a click of a button denoting user is going for a long drive. In the long drive, this app finds out whether the user had taken break it between the ride for a safer journey. For example: In a 2 hour ride, Driver should take rest for atleast 10 minutes for refreshments. 
 
-The apps are built into as a docker images and is orchestrated by AnkaiOS. 
+This triggered by a button in the dashboard developed to start and stop the container
 
+## Configuration
+
+```
+git clone https://github.com/Eclipse-SDV-Hackathon-Chapter-Two/PythonHobbits.git
+cd PythonHobbits
+code .
+```
+Configured container will be opened in vscode
+
+To enable the data to be shared within the container - create a new network using podman
+
+```
+podman create network test
+podman run -it --rm -v /workspaces/shift2sdv/measurements:/measurements --net=test ghcr.io/eclipse-sdv-hackathon-chapter-two/shift2sdv/ecal_base:5.12 /bin/bash
+```
+In a seperate terminal run
+
+```console
+ecal_play -m /measurements/<measurement_data>
+```
+
+To start the workload
+
+```
+cd scripts
+start-shift2sdv
+```
+
+To check whether the workloads are start run
+
+```
+ank get workloads
+```
+
+## Dashboard created
+
+<p align="center">
+   <img src="src/dashboard.png" alt="dashboard"/>
+</p>
+
+## Stability score for Funny driving scenario
+
+<p align="center">
+   <img src="src/funny_driving.png" alt="funnydriving"/>
+</p>
+
+## Object detection for Collision detection scenario
+
+<p align="center">
+   <img src="src/ObjectDetection.png" alt="funnydriving"/>
+</p>
+
+## ROI Estimation from Camera
+
+<p align="center">
+   <img src="src/screenshot.png" alt="roi"/>
+</p>
