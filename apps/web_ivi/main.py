@@ -201,7 +201,7 @@ async def object_check():
         sub.set_callback(callback_object_info)
 
         while ecal_core.ok() and not stop_server_side_event.is_set():
-            if not object_check.empty():
+            if not object_queue.empty():
                 object_data = object_queue.get()
                 logger.info(object_data)
                 object_queue.task_done()
