@@ -19,10 +19,4 @@ COPY static /web_ivi/static
 WORKDIR /web_ivi
 EXPOSE 5500
 
-<<<<<<< HEAD
-EXPOSE 5500
-
 ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5500"]
-=======
-ENTRYPOINT ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "5500"]
->>>>>>> 861d03de09b756288f1c25bd197ee192a4318aa2
