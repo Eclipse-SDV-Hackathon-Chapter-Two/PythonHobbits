@@ -26,6 +26,10 @@ This app is enabled by a click of a button denoting that the user is going for a
 
 This is triggered by a button in the dashboard to start and stop the container
 
+## Link to presentation
+
+[Intelligent Auto](https://docs.google.com/presentation/d/1pFyykyVwF7LaIeR13nKeDW7cB_JKAISGbimxy4FBxfc/)
+
 ## Configuration
 
 ```
