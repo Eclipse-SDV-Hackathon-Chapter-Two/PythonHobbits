@@ -35,12 +35,6 @@ code .
 ```
 Configured container will be opened in vscode
 
-To enable the data to be shared within the container - create a new network using podman
-
-```
-podman create network test
-podman run -it --rm -v /workspaces/shift2sdv/measurements:/measurements --net=test ghcr.io/eclipse-sdv-hackathon-chapter-two/shift2sdv/ecal_base:5.12 /bin/bash
-```
 In a seperate terminal run
 
 ```console
@@ -98,5 +92,5 @@ ank- logs "<APP-NAME>"
 ## Team members
 
 - [Veena Sridhar](https://linkedin.com/in/veenasridhar96/)
-- [Mehraj Fathima](https://linkedin.com/in/mehrajfathima/)
+- [Mehraj Fathima](https://linkedin.com/in/mehraj-fathima-z-b05a55163/)
 - [Raghul Raj](https://linkedin.com/in/raghulraj2305/)
