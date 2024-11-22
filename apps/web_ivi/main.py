@@ -112,18 +112,6 @@ async def vehicle_dynamics():
         ecal_core.finalize()
     return StreamingResponse(vehicle_dynamics_generator(), media_type="text/event-stream")
 
-# @app.get("/send-string1")
-# async def send_string1():
-
-#     async def send_string_generator():
-#         while not stop_server_side_event.is_set():
-#             # logger.info("Hello")
-#             yield f"event: send-string\ndata: {data_str}\n\n"
-#             await sleep(1)
-
-#     return StreamingResponse(send_string_generator(), media_type="text/event-stream")
-
-
 @app.get("/stability-info")
 async def stability_info():
 
@@ -145,7 +133,7 @@ async def stability_info():
         sub.set_callback(callback_stability_info)
 
         while ecal_core.ok() and not stop_server_side_event.is_set():
-            if not stability_info.empty():
+            if not stability_queue.empty():
                 stability_data = stability_queue.get()
                 logger.info(stability_data)
                 stability_queue.task_done()
@@ -180,7 +168,7 @@ async def health_info():
         sub.set_callback(callback_health_info)
 
         while ecal_core.ok() and not stop_server_side_event.is_set():
-            if not health_info.empty():
+            if not health_queue.empty():
                 health_data = health_queue.get()
                 logger.info(health_data)
                 health_queue.task_done()
@@ -191,31 +179,6 @@ async def health_info():
         # Finalize eCAL API
         ecal_core.finalize()
     return StreamingResponse(health_info_generator(), media_type="text/event-stream")
-
-
-
-# @app.get("/send-string2")
-# async def send_string2():
-
-#     async def send_string_generator():
-#         while not stop_server_side_event.is_set():
-#             # logger.info("Hello")
-#             yield f"event: send-string\ndata: {data_str}\n\n"
-#             await sleep(1)
-
-#     return StreamingResponse(send_string_generator(), media_type="text/event-stream")
-
-# @app.get("/object-check")
-# async def send_string3():
-
-#     async def object_check_generator():
-#         while not stop_server_side_event.is_set():
-#             # logger.info("Hello")
-#             yield f"event: send-string\ndata: {data_str}\n\n"
-#             await sleep(1)
-
-#     return StreamingResponse(send_string_generator(), media_type="text/event-stream")
-
 
 @app.get("/object-check")
 async def object_check():
@@ -238,7 +201,7 @@ async def object_check():
         sub.set_callback(callback_object_info)
 
         while ecal_core.ok() and not stop_server_side_event.is_set():
-            if not object_check.empty():
+            if not object_queue.empty():
                 object_data = object_queue.get()
                 logger.info(object_data)
                 object_queue.task_done()
